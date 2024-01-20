@@ -47,7 +47,16 @@ public class Vaisseau : MonoBehaviour
             Quaternion rotationCible = Quaternion.Euler(0f, 0f, 0f);
 
             // Utilisez RotateTowards pour ajuster progressivement chaque composante de la rotation vers 0
-            float rotationSpeed = 5f; // Ajustez cette valeur selon vos besoins
+            float rotationSpeed = 50f; // Ajustez cette valeur selon vos besoins
+
+            //float maxMancheRotationZ = 35f;
+            //float maxMancheRotationX = 22.5f;
+            //if (rotationActuelle.z >= maxMancheRotationZ || rotationActuelle.z <= -maxMancheRotationZ)
+            //{
+            //    Debug.Log("Clic");
+            //}
+            ////Debug.Log(rotationActuelle.z);
+
             mancheRotation.transform.rotation = Quaternion.RotateTowards(rotationActuelle, rotationCible * Quaternion.Euler(rotationVaisseauActuelle), rotationSpeed * Time.deltaTime);
         }
 
