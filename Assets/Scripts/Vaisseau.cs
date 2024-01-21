@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Vaisseau : MonoBehaviour
 {
     [SerializeField] private float vitesseDeplacement = 5f;
     [SerializeField] private float vitesseRotation = 5f;
+
 
     [SerializeField] private GameObject mancheRotation;
 
@@ -18,8 +20,8 @@ public class Vaisseau : MonoBehaviour
 
     void Update()
     {
-        float deplacementHorizontal = Input.GetAxis("Horizontal");
-        float deplacementVertical = Input.GetAxis("Vertical");
+        //float deplacementHorizontal = Input.GetAxis("Horizontal");
+        //float deplacementVertical = Input.GetAxis("Vertical");
 
         if (Input.GetMouseButton(1)) // Clic droit enfoncé
         {
@@ -37,8 +39,6 @@ public class Vaisseau : MonoBehaviour
         }
         else
         {
-            // Faire en sorte que les rotations x, y, et z du mancheRotation reviennent à 0
-
             // Obtenez la rotation actuelle du mancheRotation
             Quaternion rotationActuelle = mancheRotation.transform.rotation;
             Vector3 rotationVaisseauActuelle = transform.rotation.eulerAngles;
@@ -49,22 +49,37 @@ public class Vaisseau : MonoBehaviour
             // Utilisez RotateTowards pour ajuster progressivement chaque composante de la rotation vers 0
             float rotationSpeed = 50f; // Ajustez cette valeur selon vos besoins
 
-            //float maxMancheRotationZ = 35f;
-            //float maxMancheRotationX = 22.5f;
-            //if (rotationActuelle.z >= maxMancheRotationZ || rotationActuelle.z <= -maxMancheRotationZ)
-            //{
-            //    Debug.Log("Clic");
-            //}
-            ////Debug.Log(rotationActuelle.z);
-
             mancheRotation.transform.rotation = Quaternion.RotateTowards(rotationActuelle, rotationCible * Quaternion.Euler(rotationVaisseauActuelle), rotationSpeed * Time.deltaTime);
         }
 
+        //// Rotation du vaisseau avec les touches horizontales
+        //transform.Rotate(0f, deplacementHorizontal * vitesseRotation * Time.deltaTime, 0f);
+
+        //// Ajout de force au vaisseau dans la direction du déplacement vertical
+        //Vector3 forceDeplacement = transform.forward * deplacementVertical * vitesseDeplacement;
+        //rb.AddForce(forceDeplacement);
+        mouvementVaisseau();
+        LimitRotZ();
+    }
+
+    private void mouvementVaisseau()
+    {
+        float deplacementHorizontal = Input.GetAxis("Horizontal");
+        float deplacementVertical = Input.GetAxis("Vertical");
         // Rotation du vaisseau avec les touches horizontales
         transform.Rotate(0f, deplacementHorizontal * vitesseRotation * Time.deltaTime, 0f);
-
         // Ajout de force au vaisseau dans la direction du déplacement vertical
         Vector3 forceDeplacement = transform.forward * deplacementVertical * vitesseDeplacement;
         rb.AddForce(forceDeplacement);
+    }
+
+    private void LimitRotZ()
+    {
+        Vector3 mancheEulerAngles = mancheRotation.transform.rotation.eulerAngles;
+
+        mancheEulerAngles.z = (mancheEulerAngles.z > 180f) ? mancheEulerAngles.z - 360f : mancheEulerAngles.z;
+        mancheEulerAngles.z = Mathf.Clamp(mancheEulerAngles.z, -22.5f, 22.5f);
+
+        mancheRotation.transform.rotation = Quaternion.Euler(mancheEulerAngles);
     }
 }
