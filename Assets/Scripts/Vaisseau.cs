@@ -20,8 +20,6 @@ public class Vaisseau : MonoBehaviour
 
     void Update()
     {
-        //float deplacementHorizontal = Input.GetAxis("Horizontal");
-        //float deplacementVertical = Input.GetAxis("Vertical");
 
         if (Input.GetMouseButton(1)) // Clic droit enfoncé
         {
@@ -52,14 +50,9 @@ public class Vaisseau : MonoBehaviour
             mancheRotation.transform.rotation = Quaternion.RotateTowards(rotationActuelle, rotationCible * Quaternion.Euler(rotationVaisseauActuelle), rotationSpeed * Time.deltaTime);
         }
 
-        //// Rotation du vaisseau avec les touches horizontales
-        //transform.Rotate(0f, deplacementHorizontal * vitesseRotation * Time.deltaTime, 0f);
-
-        //// Ajout de force au vaisseau dans la direction du déplacement vertical
-        //Vector3 forceDeplacement = transform.forward * deplacementVertical * vitesseDeplacement;
-        //rb.AddForce(forceDeplacement);
         mouvementVaisseau();
         LimitRotZ();
+        LimitRotX();
     }
 
     private void mouvementVaisseau()
@@ -79,6 +72,16 @@ public class Vaisseau : MonoBehaviour
 
         mancheEulerAngles.z = (mancheEulerAngles.z > 180f) ? mancheEulerAngles.z - 360f : mancheEulerAngles.z;
         mancheEulerAngles.z = Mathf.Clamp(mancheEulerAngles.z, -22.5f, 22.5f);
+
+        mancheRotation.transform.rotation = Quaternion.Euler(mancheEulerAngles);
+    }
+
+    private void LimitRotX()
+    {
+        Vector3 mancheEulerAngles = mancheRotation.transform.rotation.eulerAngles;
+
+        mancheEulerAngles.x = (mancheEulerAngles.x > 180f) ? mancheEulerAngles.x - 360f : mancheEulerAngles.x;
+        mancheEulerAngles.x = Mathf.Clamp(mancheEulerAngles.x, -22.5f, 22.5f);
 
         mancheRotation.transform.rotation = Quaternion.Euler(mancheEulerAngles);
     }
