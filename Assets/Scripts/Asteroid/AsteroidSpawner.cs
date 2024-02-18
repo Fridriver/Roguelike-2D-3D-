@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject[] asteroids;
+    [SerializeField] private GameObject[] asteroidsModels;
 
-    private int amountAsteroidsSpawn = 10;
+    [SerializeField] private int amountAsteroidsSpawn = 10;
 
     private float minRandomSpawn = -500;
-    private float maxRandomSpawn = 500;
+    [SerializeField] private float maxRandomSpawn = 500;
+
+    [SerializeField] private Transform asteroids;
 
     private void Start()
     {
@@ -21,7 +23,7 @@ public class AsteroidSpawner : MonoBehaviour
         for (int i = 0; i < amountAsteroidsSpawn; i++)
         {
             Vector3 randomPosition = new Vector3(Random.Range(minRandomSpawn, maxRandomSpawn), Random.Range(minRandomSpawn, maxRandomSpawn), Random.Range(minRandomSpawn, maxRandomSpawn));
-            Instantiate(asteroids[Random.Range(0, asteroids.Length)], randomPosition, Quaternion.identity);
+            GameObject asteroidInstance = Instantiate(asteroidsModels[Random.Range(0, asteroidsModels.Length)], randomPosition, Quaternion.identity, asteroids);
         }
     }
 

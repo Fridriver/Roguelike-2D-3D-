@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce4cdb5fc1ed1f844a64b4e91ab9bb71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tailleMin: 5
+  tailleMin: 25
   tailleMax: 100
 --- !u!54 &502976617522957630
 Rigidbody:
